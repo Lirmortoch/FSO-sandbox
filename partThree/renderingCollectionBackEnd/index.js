@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 let notes = [
   {
@@ -21,6 +23,9 @@ let notes = [
   }
 ]
 
+app.get('/api/notes', (request, response) => {
+  response.json(notes);
+});
 app.get('/api/notes/:id', (request, response) => {
   const id = request.params.id
   const note = notes.find(note => note.id === id)
