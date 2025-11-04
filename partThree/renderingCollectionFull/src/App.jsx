@@ -22,7 +22,7 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage(
-          `Note ${note.content} was already removed from server`
+          `Note '${note.content}' was already removed from server`
         );
         setTimeout(() => {
           setErrorMessage(null);
@@ -63,6 +63,8 @@ const App = () => {
   const notesToShow = showAll 
   ? notes
   : notes.filter(note => note.important);
+
+  console.log(notesToShow);
 
   return (
     <div>
