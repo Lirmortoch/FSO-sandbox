@@ -1,11 +1,12 @@
 const express = require('express');
-const cors = require('cors');
+//const cors = require('cors');
 const app = express();
 const {loadEnvFile} = require('node:process');
 loadEnvFile();
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+app.use(express.static('dist'));
 
 let notes = [
   {

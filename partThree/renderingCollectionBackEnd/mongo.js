@@ -1,0 +1,35 @@
+const mongoose = require('mongoose');
+
+const {loadEnvFile} = require('node:process');
+loadEnvFile();
+
+if (process.argv.length < 2) {
+    console.log('Give password as argument');
+    process.exit(1);
+}
+
+const password = (process.env.PASSWORD_MONGO_DB);
+
+const url = `mongodb+srv://dima2111323_db_user:${password}@cluster0.lzqwpxp.mongodb.net/?appName=Cluster0`;
+
+mongoose.set('strictQuery', false);
+
+mongoose.connect(url);
+
+const noteSchema = new mongoose.Schema({
+    content: String,
+    important: Boolean,
+});
+
+const Note = mongoose.model('Note', noteSchema);
+
+const note = new Note({
+    content: 'HTML is easy', 
+    important: true,
+});
+
+note.save().then(result => {
+    console.log('note saved!');
+    mongoose.connection.close();
+});
+
