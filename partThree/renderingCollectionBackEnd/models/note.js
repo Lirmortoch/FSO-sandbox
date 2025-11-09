@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
 const {loadEnvFile} = require('node:process');
 loadEnvFile();
+
+const mongoose = require('mongoose');
 
 const url = process.env.MONGODB_URI;
 
