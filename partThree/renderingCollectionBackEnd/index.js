@@ -9,22 +9,42 @@ const Note = require('./models/note');
 app.use(express.json());
 app.use(express.static('dist'));
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' });
+  }
+
+  next(error);
+}
+
+app.use(errorHandler);
+
 app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
     response.json(notes);
   });
 });
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id).then(note => {
-    response.json(note);
-  });
+    if (note) {
+      response.json(note);
+    }
+    else {
+      response.status(404).end();
+    }
+  })
+  .catch(error => next(error));
 });
+
 app.delete('/api/notes/:id', (request, response) => {
     const id = request.params.id;
     notes = notes.filter(note => note.id !== id);
 
     response.status(204).end();
 });
+
 app.post('/api/notes', (request, response) => {
   const body = request.body;
 
