@@ -1,4 +1,5 @@
-const config = require('./utils/config');
+const { loadEnvFile } = require('node:process');
+loadEnvFile();
 
 const express = require('express');
 const app = express();
@@ -88,6 +89,7 @@ app.put('/api/notes/:id', (request, response, next) => {
     .catch(error => next(error));
 })
 
-app.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
