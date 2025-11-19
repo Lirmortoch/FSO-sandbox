@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const {loadEnvFile} = require('node:process');
+const { loadEnvFile } = require('node:process');
 loadEnvFile();
 
 if (process.argv.length < 2) {
@@ -24,11 +24,11 @@ const noteSchema = new mongoose.Schema({
 const Note = mongoose.model('Note', noteSchema);
 
 const note = new Note({
-    content: 'HTML is easy', 
+    content: 'HTML is easy',
     important: true,
 });
 
-note.save().then(result => {
+note.save().then(() => {
     console.log('note saved!');
     mongoose.connection.close();
 });

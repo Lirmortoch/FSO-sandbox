@@ -1,4 +1,4 @@
-const {loadEnvFile} = require('node:process');
+const { loadEnvFile } = require('node:process');
 loadEnvFile();
 
 const mongoose = require('mongoose');
@@ -8,7 +8,7 @@ const url = process.env.MONGODB_URI;
 mongoose.set('strictQuery', false);
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('Connected to MongoDB');
   })
   .catch(error => {
