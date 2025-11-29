@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect(config.MONGODB_URI)
+mongoose.connect(config.MONGODB_URI, { dbName: config.IS_TEST ? 'testingDB' : 'test' })
   .then(() => {
     console.log('Connected to MongoDB');
   })
