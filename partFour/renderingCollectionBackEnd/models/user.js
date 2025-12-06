@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-const { deleteOne } = require('./note');
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: String,
   passwordHash: String,
   notes: [
