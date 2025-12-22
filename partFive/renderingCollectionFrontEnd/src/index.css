@@ -18,3 +18,7 @@ h1 {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.rendering-collection__important-btn {
+  margin-top: 20px;
+}
