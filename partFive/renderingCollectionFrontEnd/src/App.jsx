@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import Note from './components/Note';
 import noteService from './services/notes';
 import Notification from './components/Notificatoin';
 import Footer from './components/Footer';
+import loginService from './services/login';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('some error happened...');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const usernameRef = useRef('');
+  const passwordRef = useRef('');
+  const [user, setUser] = useState(null);
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id);
@@ -43,9 +45,25 @@ const App = () => {
 
   useEffect(hook, []);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    console.log('logging in with', username, password);
+    
+    try {
+      const username = usernameRef.current.value;
+      const password = passwordRef.current.value;
+
+      const user = await loginService.login({ username, password });
+
+      setUser(user);
+      usernameRef.current.value = '';
+      passwordRef.current.value = '';
+    }
+    catch {
+      setErrorMessage('wrong credentials');
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
   }
 
   function addNote(event) {
@@ -84,13 +102,13 @@ const App = () => {
           <fieldset>
             <label>
               username
-              <input type='text' value={username} onChange={({ target }) => setUsername(target.value)}></input>
+              <input type='text' ref={usernameRef}></input>
             </label>
           </fieldset>
           <fieldset>
             <label>
               password
-              <input type='password' value={username} onChange={({ target }) => setPassword(target.value)}></input>
+              <input type='password' ref={passwordRef}></input>
             </label>
           </fieldset>
           <button type='submit'>Login</button>
