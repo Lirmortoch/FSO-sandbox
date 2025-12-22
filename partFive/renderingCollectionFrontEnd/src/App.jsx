@@ -53,7 +53,7 @@ const App = () => {
       const password = passwordRef.current.value;
 
       const user = await loginService.login({ username, password });
-
+      noteService.setToken(user.token);
       setUser(user);
       usernameRef.current.value = '';
       passwordRef.current.value = '';
