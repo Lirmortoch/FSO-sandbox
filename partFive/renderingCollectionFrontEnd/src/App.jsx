@@ -6,6 +6,10 @@ import Notification from './components/Notificatoin';
 import Footer from './components/Footer';
 import loginService from './services/login';
 import LoginForm from './components/LoginForm';
+import Togglable from './components/Togglable';
+import NoteForm from './components/NoteForm';
+
+import './App.css'
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -15,7 +19,6 @@ const App = () => {
   const usernameRef = useRef('');
   const passwordRef = useRef('');
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false);
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id);
@@ -81,7 +84,7 @@ const App = () => {
     }
   }
 
-  function addNote(event) {
+  function handleAddNote(event) {
     event.preventDefault();
     const noteObject = {
       content: newNote,
@@ -105,29 +108,23 @@ const App = () => {
   : notes.filter(note => note.important);
   
   const noteForm = () => (
-    <form onSubmit={addNote} className='rendering-collection__form rc-form'>
-      <input type='text' className='rc-form__input' value={newNote} onChange={handleNoteChange}/>
-      <button type='submit' onClick={addNote} className='rc-form__button'>Save</button>
-    </form>
+    <Togglable buttonLabel='new note'>
+      <NoteForm
+        onSubmit={handleAddNote}
+        value={newNote}
+        handleChange={handleNoteChange}
+      />
+    </Togglable>
   )
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' };
-    const showWhenVisible = { display: loginVisible ? '' : 'none' };
-
     return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            handleLogin={handleLogin}
-            username={usernameRef}
-            password={passwordRef}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
+      <Togglable buttonLabel='login'>
+        <LoginForm
+          handleLogin={handleLogin}
+          username={usernameRef}
+          password={passwordRef}
+        />
+      </Togglable>
     );
   }
 
