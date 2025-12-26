@@ -5,6 +5,7 @@ import noteService from './services/notes';
 import Notification from './components/Notificatoin';
 import Footer from './components/Footer';
 import loginService from './services/login';
+import LoginForm from './components/LoginForm';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -14,6 +15,7 @@ const App = () => {
   const usernameRef = useRef('');
   const passwordRef = useRef('');
   const [user, setUser] = useState(null);
+  const [loginVisible, setLoginVisible] = useState(false);
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id);
@@ -102,57 +104,67 @@ const App = () => {
   ? notes
   : notes.filter(note => note.important);
   
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <fieldset>
-        <label>
-          username
-          <input type='text' ref={usernameRef}></input>
-        </label>
-      </fieldset>
-      <fieldset>
-        <label>
-          password
-          <input type='password' ref={passwordRef}></input>
-        </label>
-      </fieldset>
-      <button type='submit'>Login</button>
-    </form>
-  )
   const noteForm = () => (
     <form onSubmit={addNote} className='rendering-collection__form rc-form'>
       <input type='text' className='rc-form__input' value={newNote} onChange={handleNoteChange}/>
       <button type='submit' onClick={addNote} className='rc-form__button'>Save</button>
     </form>
   )
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' };
+    const showWhenVisible = { display: loginVisible ? '' : 'none' };
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm
+            handleLogin={handleLogin}
+            username={usernameRef}
+            password={passwordRef}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <main className='rendering-collection'>
-        <h1 className='rendering-collection__title'>Notes</h1>
-        <Notification message={errorMessage} />
+      <div>
+          <main className="rendering-collection">
+              <h1 className="rendering-collection__title">Notes</h1>
+              <Notification message={errorMessage} />
 
-        {!user && loginForm()}
-        {user && (
-          <div>
-            <p>{user.name} logged in</p>
-            {noteForm()}
-          </div>
-        )}
+              {!user && loginForm()}
+              {user && (
+                <div>
+                  <p>{user.name} logged in</p>
+                  {noteForm()}
+                </div>
+              )}
 
-        <button onClick={() => setShowAll(!showAll)} className='rendering-collection__important-btn'>
-          show {showAll ? 'important' : 'all'}
-        </button>
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="rendering-collection__important-btn"
+              >
+                show {showAll ? "important" : "all"}
+              </button>
 
-        <ul className='rendering-collection__list rc-list'>
-          {notesToShow.map(note =>
-            <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
-          )}
-        </ul>
-      </main>
-      <Footer />
-    </div>
-  )
+              <ul className="rendering-collection__list rc-list">
+                {notesToShow.map((note) => (
+                  <Note
+                    key={note.id}
+                    note={note}
+                    toggleImportance={() => toggleImportanceOf(note.id)}
+                  />
+                ))}
+              </ul>
+          </main>
+          <Footer />
+      </div>
+  );
 }
 
 export default App;
