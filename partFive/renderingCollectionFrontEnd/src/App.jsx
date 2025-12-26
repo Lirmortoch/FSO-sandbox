@@ -18,6 +18,7 @@ const App = () => {
   const usernameRef = useRef('');
   const passwordRef = useRef('');
   const [user, setUser] = useState(null);
+  const noteFormRef = useRef();
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id);
@@ -85,8 +86,9 @@ const App = () => {
   const handleLogout = () => {
     setUser(null)
   }
-  
+
   const addNote = (noteObject) => {
+    noteFormRef.current.handleToggleVisibility();
     noteService
       .create(noteObject)
       .then(returnedNote => {
@@ -99,7 +101,7 @@ const App = () => {
   : notes.filter(note => note.important);
   
   const noteForm = () => (
-    <Togglable buttonLabel='new note'>
+    <Togglable buttonLabel='new note' ref={noteFormRef} >
       <NoteForm
         createNote={addNote}
       />
