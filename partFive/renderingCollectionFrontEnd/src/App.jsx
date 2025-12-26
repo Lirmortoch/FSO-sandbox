@@ -13,7 +13,6 @@ import './App.css'
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const usernameRef = useRef('');
@@ -83,24 +82,16 @@ const App = () => {
       }, 5000);
     }
   }
-
-  function handleAddNote(event) {
-    event.preventDefault();
-    const noteObject = {
-      content: newNote,
-      id: notes.length + 1,
-      important: false,
-    }
-
+  const handleLogout = () => {
+    setUser(null)
+  }
+  
+  const addNote = (noteObject) => {
     noteService
       .create(noteObject)
       .then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
-      });
-  }
-  function handleNoteChange(event) {
-    setNewNote(event.target.value);
+        setNotes(prevNotes => prevNotes.concat(returnedNote));
+      })
   }
   
   const notesToShow = showAll 
@@ -110,9 +101,7 @@ const App = () => {
   const noteForm = () => (
     <Togglable buttonLabel='new note'>
       <NoteForm
-        onSubmit={handleAddNote}
-        value={newNote}
-        handleChange={handleNoteChange}
+        createNote={addNote}
       />
     </Togglable>
   )
@@ -137,7 +126,7 @@ const App = () => {
               {!user && loginForm()}
               {user && (
                 <div>
-                  <p>{user.name} logged in</p>
+                  <p>{user.name} logged in <button className='logout-btn' onClick={handleLogout}>logout</button></p>
                   {noteForm()}
                 </div>
               )}
