@@ -10,7 +10,6 @@ export default function NoteForm({ createNote }) {
         important: true,
       })
       setNewNote('');
-       
     }
     function handleNoteChange(event) {
       setNewNote(event.target.value);
