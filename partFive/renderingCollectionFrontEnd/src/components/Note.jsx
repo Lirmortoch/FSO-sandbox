@@ -4,7 +4,8 @@ const Note = ({ note, toggleImportance }) => {
 
   return (
     <li className='rc-list__item'>
-      <span>{note.content}</span>
+      {/* <span>{note.content}</span> */}
+      Your awesome note: {note.content}
       <button onClick={toggleImportance}>{label}</button>
     </li>
   )

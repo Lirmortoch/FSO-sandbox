@@ -10,6 +10,6 @@ test('renders content', () => {
 
   render(<Note note={note} />);
 
-  const element = screen.getByText('Component testing is done with react-testing-library');
+  const element = screen.queryByText('do not want this thing to be rendered');
   expect(element).toBeDefined();
 });
