@@ -20,7 +20,10 @@ export default function NoteForm({ createNote }) {
       <h2>Create a new note</h2>
 
       <form onSubmit={handleAddNote} className='rendering-collection__form rc-form'>
-        <input type='text' className='rc-form__input' value={newNote} onChange={handleNoteChange}/>
+        <label>
+          content
+          <input type='text' className='rc-form__input' value={newNote} onChange={handleNoteChange}/>
+        </label>
 
         <button type='submit' className='rc-form__button'>Save</button>
       </form>
