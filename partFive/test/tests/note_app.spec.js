@@ -48,6 +48,7 @@ describe('Note app', () => {
         const otherNoteText = page.getByText('second note');
         const otherNoteElement = otherNoteText.locator('..');
 
+        await page.pause();
         await otherNoteElement
           .getByRole('button', { name: 'make not important' }).click();
         await expect(otherNoteElement.getByText('make important')).toBeVisible();
