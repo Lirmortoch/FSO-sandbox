@@ -16,4 +16,22 @@ const noteReducer = (state = [], action) => {
   }
 }
 
-export { noteReducer }
+const createNote = content => {
+  return {
+    type: 'NEW_NOTE',
+    payload: {
+      content,
+      important: false,
+      id: generateId()
+    }
+  }
+}
+
+const toggleImportanceOf = id => {
+  return {
+    type: 'TOGGLE_IMPORTANCE',
+    payload: { id }
+  }
+}
+
+export { noteReducer, createNote, toggleImportanceOf }
