@@ -8,10 +8,13 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "server": "json-server -p 3001 db.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
+    "helmet": "^8.1.0",
+    "json-server": "^0.17.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-redux": "^9.2.0",
