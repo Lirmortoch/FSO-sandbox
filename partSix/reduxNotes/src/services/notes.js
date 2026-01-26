@@ -26,4 +26,34 @@ const createNew = async (content) => {
   return await response.json()
 }
 
-export default { getAll, createNew, }
+const getOne = async (id) => {
+  const response = await fetch(baseUrl + `/${id}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to get note')
+  }
+
+  return await response.json()
+}
+
+const toggleImportanceOf = async (id) => {
+  const noteToChange = await getOne(id)
+  const changedNote = {
+    ...noteToChange,
+    important: !noteToChange.important,
+  }
+
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', },
+    body: JSON.stringify(changedNote),
+  }
+
+  const response = await fetch(baseUrl + `/${id}`, options)
+
+  if (!response.ok) {
+    throw new Error('Failed to change importance of note')
+  }
+}
+
+export default { getAll, createNew, getOne, toggleImportanceOf, }
