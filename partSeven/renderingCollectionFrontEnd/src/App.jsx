@@ -102,7 +102,7 @@ const App = () => {
     }
   ])
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null) 
 
   const login = (user) => {
     setUser(user)
@@ -126,16 +126,16 @@ const App = () => {
         </div>
 
         <Routes>
-          <Route path="/notes/:id" element={<Note notes={notes} />} />
-          <Route path="/notes" element={<Notes notes={notes} />} />
+          <Route path="/notes/:id" element={<Note notes={notes} />} />  
+          <Route path="/notes" element={<Notes notes={notes} />} />   
           <Route path="/users" element={user ? <Users /> : <Navigate replace to="/login" />} />
           <Route path="/login" element={<Login onLogin={login} />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />      
         </Routes>
-      </Router>
+      </Router>      
       <footer>
         <br />
-        <em>Note app, Department of Computer Science 2023</em>
+        <em>Note app, Department of Computer Science 2024</em>
       </footer>
     </div>
   )
