@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
 
 import {
@@ -6,10 +5,11 @@ import {
   Route,
   Link,
   Navigate,
-  useParams,
   useNavigate,
   useMatch,
 } from "react-router-dom"
+
+import { Table, Form, Button, Alert } from 'react-bootstrap'
 
 
 const Home = () => (
@@ -32,13 +32,20 @@ const Note = ({ note }) => {
 const Notes = ({ notes }) => (
   <div>
     <h2>Notes</h2>
-    <ul>
-      {notes.map(note =>
-        <li key={note.id}>
-          <Link to={`/notes/${note.id}`}>{note.content}</Link>
-        </li>
-      )}
-    </ul>
+    <Table striped>
+      <tbody>
+        {notes.map(note =>
+          <tr key={note.id}>
+            <td>
+              <Link to={`/notes/${note.id}`}>{note.content}</Link>
+            </td>
+            <td>
+              {note.user}
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table>
   </div>
 )
 
@@ -65,15 +72,22 @@ const Login = (props) => {
   return (
     <div>
       <h2>login</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          username: <input />
-        </div>
-        <div>
-          password: <input type='password' />
-        </div>
-        <button type="submit">login</button>
-      </form>
+      <Form onSubmit={onSubmit}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
+            type='text'
+            name='username'
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>password:</Form.Label>
+          <Form.Control
+            type='password'
+          />
+        </Form.Group>
+        <Button variant='primary' type="submit">login</Button>
+      </Form>
     </div>
   )
 }
@@ -99,11 +113,15 @@ const App = () => {
       user: 'Arto Hellas'
     }
   ])
-
+  const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null) 
 
   const login = (user) => {
     setUser(user)
+    setMessage(`welcome ${user}`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 10000);
   }
 
   const padding = {
@@ -116,7 +134,12 @@ const App = () => {
     : null
 
   return (
-    <div>    
+    <div className='container'>    
+      {(message && 
+        <Alert variant='success'>
+          {message}
+        </Alert>
+      )}
       <div>
         <Link style={padding} to="/">home</Link>
         <Link style={padding} to="/notes">notes</Link>
